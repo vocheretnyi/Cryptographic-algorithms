@@ -28,6 +28,8 @@ private:
     // return random divisor of n using Pollard-Rho algo
     BigInteger pollardRho(BigInteger n);
 
+    void recursive_factorization(BigInteger n);
+
 public:
 
     BigInteger chineseSolver(const vector<BigInteger>& a, const vector<BigInteger>& r);

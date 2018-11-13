@@ -36,50 +36,24 @@ BigInteger Algorithms::chineseSolver(const vector<BigInteger>& a, const vector<B
 }
 
 BigInteger Algorithms::pollardRho(BigInteger n) {
-    const int iterations_count = 1e5;
-//    BigInteger x = random(1, n - 2);
-//    BigInteger y = 1;
-//    for (long long i = 0, stage = 2; gcd(n, abs(x - y)) == 1; ++i) {
-//        if (i == stage) {
-//            y = x;
-//            stage *= 2;
-//        }
-//        x = (x * x - 1) % n;
-//    }
-//    return gcd(n, abs(x - y));
+    const int iterations_count = 1e3;
     BigInteger b0 = random(0, n - 1);
     BigInteger b1 = b0;
-    BigInteger g;
-    b1 = b1 * b1 % n;
-    b1 = b1 + 1;
-    if (b1 == n) {
-        b1 = 0;
-    }
-    g = gcd(abs(b1 - b0), n);
+    int q = rand() % 5 + 1;
+    b1 = (b1 * b1 + q) % n;
+    BigInteger g = gcd(abs(b1 - b0), n);
     for (int i = 0; i < iterations_count && (g == 1 || g == n); ++i) {
-        b0 = b0 * b0 % n;
-        b0 = b0 + 1;
-        if (b0 == n) {
-            b0 = 0;
-        }
-        b1 = b1 * b1 % n;
-        b1 = b1 + 1;
-        b1 = b1 * b1 % n;
-        b1 = b1 + 1;
-        if (b1 == n) {
-            b1 = 0;
-        }
+        b0 = (b0 * b0 + q) % n;
+        b1 = (b1 * b1 + q) % n;
+        b1 = (b1 * b1 + q) % n;
         g = gcd(abs(b1 - b0), n);
     }
     return g;
 }
 
 vector<BigInteger> Algorithms::factorization(BigInteger n) {
-    if (n == 1 || isPrime(n)) {
-        return vector<BigInteger> {n};
-    }
 
-    vector<BigInteger> listOfPrimeDivisors;
+    listOfPrimeDivisors.clear();
 
     int i = 2;
 
@@ -88,24 +62,15 @@ vector<BigInteger> Algorithms::factorization(BigInteger n) {
             n /= i;
             listOfPrimeDivisors.push_back(i);
         }
-        ++i;
-    }
-
-
-    while (n > 2) {
-        BigInteger g = pollardRho(n);
-        vector<BigInteger> tmp = factorization(g);
-        listOfPrimeDivisors.insert(listOfPrimeDivisors.end(), tmp.begin(), tmp.end());
-        n /= g;
-
-        if (isPrime(n)) {
-            break;
+        if (i == 2) {
+            i = 3;
+        } else {
+            i += 2;
         }
     }
 
-    if (n > 1) {
-        listOfPrimeDivisors.push_back(n);
-    }
+    recursive_factorization(n);
+
     return listOfPrimeDivisors;
 }
 
@@ -161,8 +126,31 @@ bool Algorithms::isPrime_MillerRabin(const BigInteger &n, int k) {
 }
 
 bool Algorithms::isPrime(const BigInteger &n) {
-    if (n < 1000000) {
+    if (n < 10000000) {
         return isPrime_naive(n.to_int());
     }
     return isPrime_MillerRabin(n);
+}
+
+void Algorithms::recursive_factorization(BigInteger n) {
+    if (isPrime(n)) {
+        listOfPrimeDivisors.push_back(n);
+        return;
+    }
+    if (n == 1) {
+        return;
+    }
+    while (n > 2) {
+        BigInteger g = pollardRho(n);
+        recursive_factorization(g);
+        n /= g;
+
+        if (isPrime(n)) {
+            break;
+        }
+    }
+
+    if (n > 1) {
+        listOfPrimeDivisors.push_back(n);
+    }
 }

@@ -240,7 +240,14 @@ namespace BigIntegerLibrary {
     }
 
     BigInteger BigInteger::operator%(int other) const {
-        return *this - ((*this / other) * other);
+        BigInteger res(*this);
+        int carry = 0;
+        for (int i = (int) num.size() - 1; i >= 0; --i) {
+            long long cur = res.num[i] + carry * 1LL * base;
+            res.num[i] = int(cur / other);
+            carry = int(cur % other);
+        }
+        return carry;
     }
 
     BigInteger& BigInteger::operator%=(int other) {

@@ -18,8 +18,9 @@ using namespace BigIntegerLibrary;
 
 
 int main() {
-    BigInteger a;
-    a = 10000;
+    srand(time(NULL));
+    BigInteger a("545344234");
+//    a = 10000;
 //    cin >> a;
     Algorithms solver = Algorithms();
     vector<BigInteger> res = solver.factorization(a);
