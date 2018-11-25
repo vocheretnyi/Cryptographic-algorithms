@@ -19,13 +19,7 @@ using namespace BigIntegerLibrary;
 
 int main() {
     srand(time(NULL));
-    BigInteger a("545344234");
-//    a = 10000;
-//    cin >> a;
     Algorithms solver = Algorithms();
-    vector<BigInteger> res = solver.factorization(a);
-    for (BigInteger x: res) {
-        cout << x << " ";
-    }
+    cout << solver.discreteLog(3, 15, 17);
     return 0;
 }

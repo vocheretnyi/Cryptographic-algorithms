@@ -6,6 +6,8 @@
 #define BIGINTEGER_ALGORITHMS_H
 
 #include "BigInteger.h"
+#include <algorithm>
+#include <map>
 
 using namespace BigIntegerLibrary;
 
@@ -40,7 +42,16 @@ public:
 
     bool isPrime(const BigInteger& n);
 
+    int mobiusFunction(BigInteger n);
 
+    BigInteger eulerFunction(BigInteger n);
+
+    int jacobiSymbol(BigInteger a, BigInteger p);
+
+    int legendreSymbol(BigInteger a, BigInteger p);
+
+    // using baby-step-giant-step algorithm
+    BigInteger discreteLog(BigInteger a, BigInteger b, BigInteger m);
 };
 
 

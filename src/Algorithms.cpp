@@ -154,3 +154,83 @@ void Algorithms::recursive_factorization(BigInteger n) {
         listOfPrimeDivisors.push_back(n);
     }
 }
+
+int Algorithms::mobiusFunction(BigInteger n) {
+    if (n == BigInteger(1)) {
+        return 1;
+    }
+    auto fact = factorization(n);
+    sort(fact.begin(), fact.end());
+    int k = 1;
+    for (int i = 1; i < fact.size(); ++i) {
+        if (fact[i] != fact[i - 1]) {
+            ++k;
+        } else {
+            return 0; // n % fact[i]^2 == 0
+        }
+    }
+    if (k % 2) {
+        return -1;
+    }
+    return 1;
+}
+
+BigInteger Algorithms::eulerFunction(BigInteger n) {
+    auto fact = factorization(n);
+    sort(fact.begin(), fact.end());
+    BigInteger res = n;
+    for (int i = 0; i < fact.size(); ++i) {
+        if (i == 0 || (fact[i] != fact[i - 1])) {
+            res -= res / fact[i];
+        }
+    }
+    return res;
+}
+
+int Algorithms::jacobiSymbol(BigInteger a, BigInteger P) {
+    if (P == BigInteger(1)) {
+        return 1;
+    }
+    auto fact = factorization(P);
+    sort(fact.begin(), fact.end());
+    int ans = 1;
+    for (BigInteger p: fact) {
+        ans *= legendreSymbol(a, p);
+        if (ans == 0) {
+            return 0;
+        }
+    }
+    return ans;
+}
+
+int Algorithms::legendreSymbol(BigInteger a, BigInteger p) {
+    if (a % p == 0) {
+        return 0;
+    }
+    if (powm(a, (p - 1) / 2, p) == 1) {
+        return 1;
+    }
+    return -1;
+}
+
+BigInteger Algorithms::discreteLog(BigInteger a, BigInteger b, BigInteger m) {
+    BigInteger n = sqrt(m) + 1;
+    BigInteger A = powm(a, n, m);
+    BigInteger cur_a = A;
+    map<BigInteger, BigInteger> mp;
+    for (int i = 1; i <= n.to_int(); ++i) {
+        mp[cur_a] = i;
+        cur_a = (cur_a * A) % m;
+    }
+    cur_a = b;
+    for (int i = 0; i < n.to_int(); ++i) {
+        if (mp.count(cur_a)) {
+            BigInteger ans = mp[cur_a] * n - i;
+            if (ans < m) {
+                return ans;
+            }
+        }
+        cur_a = (cur_a * a) % m;
+    }
+    return -1;
+}
