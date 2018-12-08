@@ -18,7 +18,7 @@ private:
     //Helper for chinese, return a^(-1) mod m
     BigInteger inverse(BigInteger a, BigInteger m);
 
-    BigInteger random(BigInteger l, BigInteger r);
+
 
     vector<BigInteger> listOfPrimeDivisors;
 
@@ -32,8 +32,12 @@ private:
 
     void recursive_factorization(BigInteger n);
 
-public:
+    pair<BigInteger, BigInteger> powComplexMod(pair<BigInteger, BigInteger> a, BigInteger n, BigInteger m, BigInteger w);
 
+    pair<BigInteger, BigInteger> mulComplex( pair<BigInteger, BigInteger> a,  pair<BigInteger, BigInteger> b, BigInteger w, BigInteger mod);
+
+public:
+    BigInteger random(BigInteger l, BigInteger r);
     BigInteger chineseSolver(const vector<BigInteger>& a, const vector<BigInteger>& r);
 
 
@@ -52,6 +56,11 @@ public:
 
     // using baby-step-giant-step algorithm
     BigInteger discreteLog(BigInteger a, BigInteger b, BigInteger m);
+
+    // using Cipolla's algorithm
+    pair<BigInteger, BigInteger> discreteSquareRoot(BigInteger p, BigInteger n);
+
+    void ElGamalEncryption(BigInteger m);
 };
 
 

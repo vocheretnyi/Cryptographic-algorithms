@@ -234,3 +234,65 @@ BigInteger Algorithms::discreteLog(BigInteger a, BigInteger b, BigInteger m) {
     }
     return -1;
 }
+
+pair<BigInteger, BigInteger> Algorithms::discreteSquareRoot(BigInteger p, BigInteger n) {
+    if(legendreSymbol(n, p) == -1) {
+        return {BigInteger(-1), BigInteger(-1)};
+    }
+    BigInteger a;
+    for(int i = 0; i < 100; ++i) {
+        a = random(1, p - 1);
+        if(legendreSymbol(a * a - n, p) == -1) {
+            break;
+        }
+    }
+    if(legendreSymbol(a * a - n, p) != -1) {
+        return {BigInteger(-1), BigInteger(-1)};
+    }
+
+    pair<BigInteger, BigInteger> w{a, 1};
+    auto res = powComplexMod(w, (p + 1) / 2, p, a * a - n);
+    if(res.second == BigInteger(0)) {
+        BigInteger x1 = res.first;
+        while (x1 < 0) {
+            x1 += p;
+        }
+        BigInteger x2 = (p - x1) % p;
+        if (x1 * x1 % p == n) {
+            return {x1, x2};
+        }
+    }
+    return {BigInteger(-1), BigInteger(-1)};
+
+}
+
+
+
+pair<BigInteger, BigInteger> Algorithms::powComplexMod(pair<BigInteger, BigInteger> a, BigInteger n, BigInteger mod, BigInteger w) {
+    if (n == 0) {
+        return {BigInteger(1) % mod, BigInteger(0)};
+    }
+    if (n == 1) {
+        return {a.first % mod, a.second % mod};
+    }
+    if (n % 2 == 1) {
+        auto res = mulComplex(powComplexMod(a, n - 1, mod, w), a, w, mod);
+        return {res.first % mod, res.second % mod};
+    }
+    pair<BigInteger, BigInteger> tmp = powComplexMod(a, n / 2, mod, w);
+    tmp = mulComplex(tmp, tmp, w, mod);
+    return {tmp.first % mod, tmp.second % mod};
+}
+
+pair<BigInteger, BigInteger>
+Algorithms::mulComplex(pair<BigInteger, BigInteger> a, pair<BigInteger, BigInteger> b, BigInteger w, BigInteger mod) {
+    return {(a.first * b.first + a.second * b.second * w + mod) % mod, (a.second * b.first + a.first * b.second + mod) % mod};
+}
+
+void Algorithms::ElGamalEncryption(BigInteger m) {
+    BigInteger p = random(2, 1000000);
+    while (!isPrime(p)) {
+        p = random(2, 1000000);
+    }
+
+}
