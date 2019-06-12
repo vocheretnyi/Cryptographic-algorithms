@@ -133,6 +133,5 @@ namespace BigIntegerLibrary {
 
     const BigInteger zero(0);
 
-
 }
 #endif //BIGINTEGER_BIGINTEGER_H

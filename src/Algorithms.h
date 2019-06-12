@@ -15,10 +15,6 @@ using namespace BigIntegerLibrary;
 class Algorithms {
 
 private:
-    //Helper for chinese, return a^(-1) mod m
-    BigInteger inverse(BigInteger a, BigInteger m);
-
-
 
     vector<BigInteger> listOfPrimeDivisors;
 
@@ -36,9 +32,14 @@ private:
 
     pair<BigInteger, BigInteger> mulComplex( pair<BigInteger, BigInteger> a,  pair<BigInteger, BigInteger> b, BigInteger w, BigInteger mod);
 
+    void generateKeys();
+
 public:
     BigInteger random(BigInteger l, BigInteger r);
     BigInteger chineseSolver(const vector<BigInteger>& a, const vector<BigInteger>& r);
+
+    //Helper for chinese, return a^(-1) mod m
+    BigInteger inverse(BigInteger a, BigInteger m);
 
 
     vector<BigInteger> factorization(BigInteger n);

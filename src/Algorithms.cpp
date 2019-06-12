@@ -36,7 +36,7 @@ BigInteger Algorithms::chineseSolver(const vector<BigInteger>& a, const vector<B
 }
 
 BigInteger Algorithms::pollardRho(BigInteger n) {
-    const int iterations_count = 1e3;
+    const int iterations_count = 1e5;
     BigInteger b0 = random(0, n - 1);
     BigInteger b1 = b0;
     int q = rand() % 5 + 1;
@@ -57,7 +57,7 @@ vector<BigInteger> Algorithms::factorization(BigInteger n) {
 
     int i = 2;
 
-    while (n > 2 && i < 1000000) {
+    while (n > 2 && i < 100000) {
         while (n % i == 0) {
             n /= i;
             listOfPrimeDivisors.push_back(i);
@@ -141,6 +141,7 @@ void Algorithms::recursive_factorization(BigInteger n) {
         return;
     }
     while (n > 2) {
+        cout << n << endl;
         BigInteger g = pollardRho(n);
         recursive_factorization(g);
         n /= g;
@@ -214,7 +215,7 @@ int Algorithms::legendreSymbol(BigInteger a, BigInteger p) {
 }
 
 BigInteger Algorithms::discreteLog(BigInteger a, BigInteger b, BigInteger m) {
-    BigInteger n = sqrt(m) + 1;
+    BigInteger n = (sqrt(m) + 1) / 100;
     BigInteger A = powm(a, n, m);
     BigInteger cur_a = A;
     map<BigInteger, BigInteger> mp;
@@ -232,6 +233,7 @@ BigInteger Algorithms::discreteLog(BigInteger a, BigInteger b, BigInteger m) {
         }
         cur_a = (cur_a * a) % m;
     }
+    cout << n << endl;
     return -1;
 }
 
@@ -290,9 +292,10 @@ Algorithms::mulComplex(pair<BigInteger, BigInteger> a, pair<BigInteger, BigInteg
 }
 
 void Algorithms::ElGamalEncryption(BigInteger m) {
-    BigInteger p = random(2, 1000000);
-    while (!isPrime(p)) {
-        p = random(2, 1000000);
-    }
+    generateKeys();
 
+}
+
+void Algorithms::generateKeys() {
+//    BigInteger
 }

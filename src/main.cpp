@@ -12,6 +12,8 @@
 #include <iomanip>
 #include "BigInteger.h"
 #include "Algorithms.h"
+#include "EllypticPoint.h"
+#include "ElGamalEncryption.h"
 
 using namespace std;
 using namespace BigIntegerLibrary;
@@ -23,7 +25,7 @@ const string menu[] = {
         "Legendre and Jacobi symbols",
         "Discrete square root (Cipolla's algorithm)",
         "Is prime (Miller-Rabin algorithm)",
-        ""
+        //""
 };
 Algorithms solver;
 
@@ -64,6 +66,7 @@ int main() {
     solver = Algorithms();
     int menu_len = sizeof(menu) / sizeof(string);
     int t;
+
     while (true) {
         cout << "Choose variant:\n";
         for (int i = 1; i <= menu_len; ++i) {
@@ -80,11 +83,11 @@ int main() {
             }
             cout << "\n";
         } else if (t == 2) {
-//            cout << "Enter a, b, m (a^x = b (mod m))\n";
-//            BigInteger a, b, m;
-//            cin >> a >> b >> m;
-//            cout << "x = " << solver.discreteLog(a, b, m) << "\n";
-            testDiscreteLog();
+            cout << "Enter a, b, m (a^x = b (mod m))\n";
+            BigInteger a, b, m;
+            cin >> a >> b >> m;
+            cout << "x = " << solver.discreteLog(a, b, m) << "\n";
+//            testDiscreteLog();
         } else if (t == 3) {
             BigInteger n;
             cin >> n;
@@ -104,6 +107,11 @@ int main() {
             BigInteger n;
             cin >> n;
             cout << "Isprime: " << solver.isPrime(n) << "\n";
+        } else if (t == 7) {
+            ElGamalEncryption elGamalEncryption = ElGamalEncryption();
+            auto res = elGamalEncryption.encode(EllypticPoint(24, 26));
+            auto point = elGamalEncryption.decode(res);
+            cout << point.getX() << ' ' << point.getY();
         }
     }
     return 0;
